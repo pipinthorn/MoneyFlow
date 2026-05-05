@@ -1,13 +1,13 @@
-<!DOCTYPE html>
-<!-- saved from url=(0063)file:///Users/chayinthorntadadusita/Downloads/money-flow_1.html -->
-<html lang="th"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Money Flow</title>
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="./MoneyFlow_files/css2" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ── Reset & Base ── */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -274,14 +274,14 @@ body{
 <body>
 
 <!-- Toast -->
-<div class="toast" id="toast">✅ บันทึกสำเร็จ</div>
+<div class="toast" id="toast"></div>
 
 <!-- ══ HOME TAB ══ -->
-<div id="screen-home" style="display: block;">
+<div id="screen-home">
   <!-- Hero -->
   <div class="hero">
-    <div class="hero-month" id="hero-month">พฤษภาคม 2569</div>
-    <div class="hero-balance" id="hero-balance">฿0</div>
+    <div class="hero-month" id="hero-month">กำลังโหลด...</div>
+    <div class="hero-balance" id="hero-balance">฿—</div>
     <div class="hero-grid">
       <div class="mini-card">
         <div class="mini-label">รายรับ</div>
@@ -303,24 +303,8 @@ body{
 
   <!-- List -->
   <div class="card" id="tx-card" style="margin-top:8px">
-      <div class="tx-row" id="row-1777968477785">
-        <div style="display:flex;align-items:center;flex:1;min-width:0">
-          <div class="tx-icon" style="background:rgba(48,209,88,.12)">
-            💼
-          </div>
-          <div style="min-width:0">
-            <div class="tx-name">เงินเดือน</div>
-            <div class="tx-meta">27 เม.ย. · กรุงไทย 036 เงินเดือน</div>
-          </div>
-        </div>
-        <div style="flex-shrink:0;text-align:right;margin-left:10px">
-          <div class="tx-amount" style="color:var(--green)">
-            +฿20,000
-          </div>
-          <button class="tx-del" onclick="deleteItem(&#39;1777968477785&#39;)">ลบ</button>
-        </div>
-      </div>
-    </div>
+    <div class="loading"><div class="spinner"></div>กำลังโหลด...</div>
+  </div>
 
   <!-- Actions -->
   <div class="actions">
@@ -329,22 +313,22 @@ body{
   </div>
 
   <div style="text-align:center;color:var(--muted);font-size:12px;padding-bottom:8px">
-    ซิงค์กับ Google Sheets <span class="sync-dot" id="sync-dot" style="background: rgb(48, 209, 88);"></span>
+    ซิงค์กับ Google Sheets <span class="sync-dot" id="sync-dot" style="background:#8E8E93"></span>
   </div>
 </div>
 
 <!-- ══ ADD TAB ══ -->
-<div id="screen-add" style="display: none;">
+<div id="screen-add" style="display:none">
   <div class="screen">
     <div class="screen-header">
       <div class="title-md">รายการใหม่</div>
-      <button class="close-btn" onclick="showTab(&#39;home&#39;)">✕</button>
+      <button class="close-btn" onclick="showTab('home')">✕</button>
     </div>
 
     <!-- Type -->
     <div class="type-toggle">
-      <button class="type-btn active" id="btn-income" onclick="setType(&#39;income&#39;)" style="color:#30D158">รายรับ 🟢</button>
-      <button class="type-btn" id="btn-expense" onclick="setType(&#39;expense&#39;)" style="color:var(--muted)">รายจ่าย 🔴</button>
+      <button class="type-btn active" id="btn-income" onclick="setType('income')" style="color:#30D158">รายรับ 🟢</button>
+      <button class="type-btn" id="btn-expense" onclick="setType('expense')" style="color:var(--muted)">รายจ่าย 🔴</button>
     </div>
 
     <!-- Amount -->
@@ -358,46 +342,11 @@ body{
 
     <!-- Category -->
     <div class="cat-label">หมวดหมู่</div>
-    <div class="cat-pills" id="cat-pills">
-    <button class="cat-pill active" onclick="selectCat(&#39;เงินเดือน&#39;)" style="border-color:#30D158;color:#30D158;background:#30D15818">💼 เงินเดือน</button>
-  
-    <button class="cat-pill" onclick="selectCat(&#39;งานสอน&#39;)" style="">📚 งานสอน</button>
-  
-    <button class="cat-pill" onclick="selectCat(&#39;ธุรกิจดูดวง&#39;)" style="">🔮 ธุรกิจดูดวง</button>
-  
-    <button class="cat-pill" onclick="selectCat(&#39;รับเงิน&#39;)" style="">💰 รับเงิน</button>
-  
-    <button class="cat-pill" onclick="selectCat(&#39;อื่น ๆ&#39;)" style="">📌 อื่น ๆ</button>
-  </div>
+    <div class="cat-pills" id="cat-pills"></div>
 
     <!-- Account -->
     <div class="cat-label">บัญชี</div>
-    <div class="acct-list" id="acct-list">
-    <div class="acct-row" onclick="selectAcct(&#39;กรุงไทย 036 เงินเดือน&#39;)">
-      <span class="acct-name">กรุงไทย 036 เงินเดือน</span>
-      <span class="acct-check">✓</span>
-    </div>
-  
-    <div class="acct-row" onclick="selectAcct(&#39;SCB รับเงิน/ใช้จ่าย&#39;)">
-      <span class="acct-name">SCB รับเงิน/ใช้จ่าย</span>
-      
-    </div>
-  
-    <div class="acct-row" onclick="selectAcct(&#39;กรุงเทพ ทำบุญ&#39;)">
-      <span class="acct-name">กรุงเทพ ทำบุญ</span>
-      
-    </div>
-  
-    <div class="acct-row" onclick="selectAcct(&#39;พร้อมเพย์&#39;)">
-      <span class="acct-name">พร้อมเพย์</span>
-      
-    </div>
-  
-    <div class="acct-row" onclick="selectAcct(&#39;เงินสด&#39;)">
-      <span class="acct-name">เงินสด</span>
-      
-    </div>
-  </div>
+    <div class="acct-list" id="acct-list"></div>
 
     <!-- Date & Note -->
     <div class="two-col" style="margin-bottom:18px">
@@ -411,27 +360,27 @@ body{
       </div>
     </div>
 
-    <button class="submit-btn ready" id="submit-btn" onclick="handleAdd()">บันทึก</button>
+    <button class="submit-btn" id="submit-btn" onclick="handleAdd()">บันทึก</button>
   </div>
 </div>
 
 <!-- ══ BUDGET TAB ══ -->
-<div id="screen-budget" style="display: none;">
+<div id="screen-budget" style="display:none">
   <div style="padding:12px 16px 18px">
     <div class="title-md" style="margin-bottom:4px">งบประมาณ</div>
     <div style="color:var(--muted);font-size:14px">จัดสรรจากรายรับเดือนนี้</div>
   </div>
-  <div id="budget-content"><div style="text-align:center;padding:60px 20px;color:var(--muted)"><div style="font-size:48px;margin-bottom:12px">📊</div><div>ยังไม่มีรายรับเดือนนี้</div></div></div>
+  <div id="budget-content"></div>
 </div>
 
 <!-- ══ BOTTOM TAB BAR ══ -->
 <div class="tabbar">
-  <button class="tab-item active" id="tab-home" onclick="showTab(&#39;home&#39;)">
+  <button class="tab-item active" id="tab-home" onclick="showTab('home')">
     <span class="tab-icon">🏠</span>
     <span class="tab-label">หน้าหลัก</span>
   </button>
-  <button class="fab" onclick="showTab(&#39;add&#39;)">＋</button>
-  <button class="tab-item" id="tab-budget" onclick="showTab(&#39;budget&#39;)">
+  <button class="fab" onclick="showTab('add')">＋</button>
+  <button class="tab-item" id="tab-budget" onclick="showTab('budget')">
     <span class="tab-icon">📊</span>
     <span class="tab-label">งบประมาณ</span>
   </button>
@@ -441,7 +390,7 @@ body{
 // ════════════════════════════════════════════════════
 //  ⚠️  ตั้งค่า URL ของ Apps Script ที่นี่
 // ════════════════════════════════════════════════════
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyY6vscVSxCQYmUcyNiLFiOUos0TLLLtDuKlbeyP7jZbTG0nehcZPJRdKvE2ykafkQm0Q/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeuQplm8gnb0yEmnhIonFUulo1qiyIontBu_FW8qfUikw6LGFug8zVGMDDhWl2ptc3ZA/exec";
 // ════════════════════════════════════════════════════
 
 const incomeCats  = ["เงินเดือน","งานสอน","ธุรกิจดูดวง","รับเงิน","อื่น ๆ"];
@@ -717,6 +666,5 @@ if(SCRIPT_URL==="YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"){
   loadItems();
 }
 </script>
-
-
-</body></html>
+</body>
+</html>

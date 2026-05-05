@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)file:///Users/chayinthorntadadusita/Downloads/money-flow_1.html -->
+<html lang="th"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Money Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./MoneyFlow_files/css2" rel="stylesheet">
+<style>
+/* ── Reset & Base ── */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#F2F2F7;--card:#FFFFFF;--card2:#F2F2F7;
+  --text:#1C1C1E;--text2:#3A3A3C;--muted:#8E8E93;--line:#E5E5EA;
+  --green:#30D158;--red:#FF375F;--blue:#007AFF;--orange:#FF9F0A;
+  --purple:#BF5AF2;--teal:#32ADE6;
+  --safe-bottom: env(safe-area-inset-bottom, 20px);
+}
+body{
+  font-family:'Noto Sans Thai',-apple-system,sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;max-width:430px;margin:0 auto;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:calc(80px + var(--safe-bottom));
+}
+
+/* ── Typography ── */
+.title-lg{font-size:34px;font-weight:900;letter-spacing:-.6px;line-height:1.1}
+.title-md{font-size:22px;font-weight:800;letter-spacing:-.3px}
+.title-sm{font-size:17px;font-weight:700}
+.caption{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* ── Cards ── */
+.card{
+  background:var(--card);border-radius:22px;
+  box-shadow:0 1px 0 rgba(0,0,0,.06),0 4px 20px rgba(0,0,0,.08);
+  margin:0 16px 12px;overflow:hidden;
+}
+.card-inner{padding:16px 18px}
+
+/* ── Hero ── */
+.hero{
+  background:linear-gradient(145deg,#1C1C1E 0%,#2C2C2E 100%);
+  margin:0;border-radius:0 0 32px 32px;padding:60px 22px 28px;
+  box-shadow:0 8px 40px rgba(0,0,0,.3);position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-80px;right:-60px;
+  width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,122,255,.18),transparent 70%);
+}
+.hero::after{
+  content:'';position:absolute;bottom:-40px;left:-40px;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(48,209,88,.12),transparent 70%);
+}
+.hero-month{color:rgba(255,255,255,.5);font-size:13px;font-weight:600;margin-bottom:6px}
+.hero-balance{color:#fff;font-size:44px;font-weight:900;letter-spacing:-1.5px;margin-bottom:22px;line-height:1}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;z-index:1}
+.mini-card{background:rgba(255,255,255,.09);border-radius:18px;padding:14px 16px;backdrop-filter:blur(10px)}
+.mini-label{color:rgba(255,255,255,.5);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.mini-value{font-size:22px;font-weight:900;line-height:1}
+
+/* ── Filter Pills ── */
+.pills{display:flex;gap:8px;padding:12px 16px 4px;overflow-x:auto;scrollbar-width:none}
+.pills::-webkit-scrollbar{display:none}
+.pill{
+  padding:8px 16px;border-radius:999px;border:1.5px solid var(--line);
+  background:var(--card);color:var(--text2);font-family:inherit;
+  font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;
+  transition:all .18s ease;flex-shrink:0;
+}
+.pill.active{background:var(--text);color:#fff;border-color:var(--text)}
+
+/* ── Transaction List ── */
+.tx-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:13px 18px;border-bottom:.5px solid #F2F2F7;
+  transition:background .15s;cursor:default;
+}
+.tx-row:last-child{border-bottom:none}
+.tx-row.flash{background:rgba(48,209,88,.07)}
+.tx-icon{
+  width:44px;height:44px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:21px;flex-shrink:0;margin-right:13px;
+}
+.tx-name{font-size:15px;font-weight:700;color:var(--text)}
+.tx-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.tx-amount{font-size:17px;font-weight:800;text-align:right}
+.tx-del{
+  background:none;border:none;color:var(--muted);
+  font-size:12px;font-family:inherit;cursor:pointer;
+  padding:2px 0;display:block;margin-top:2px;
+  transition:color .15s;
+}
+.tx-del:active{color:var(--red)}
+.empty{text-align:center;padding:52px 20px;color:var(--muted)}
+.empty-icon{font-size:48px;margin-bottom:12px}
+.empty-text{font-size:15px;line-height:1.5}
+
+/* ── Action Buttons ── */
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 16px 12px}
+.action-btn{
+  padding:14px;border-radius:18px;border:none;
+  font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:opacity .15s,transform .1s;
+}
+.action-btn:active{opacity:.7;transform:scale(.97)}
+.action-ghost{background:var(--card);color:var(--text2);box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.action-danger{background:rgba(255,55,95,.09);color:var(--red)}
+
+/* ── Add Form ── */
+.screen{padding:0 16px}
+.screen-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 0 20px;
+}
+.close-btn{
+  width:34px;height:34px;border-radius:999px;
+  background:var(--line);border:none;cursor:pointer;
+  font-size:17px;display:flex;align-items:center;justify-content:center;
+  transition:background .15s;
+}
+.close-btn:active{background:#D1D1D6}
+.type-toggle{
+  background:#E5E5EA;border-radius:16px;padding:4px;
+  display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:22px;
+}
+.type-btn{
+  padding:13px 0;border-radius:13px;border:none;
+  font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
+  transition:all .2s;
+}
+.type-btn.active{background:var(--card);box-shadow:0 1px 5px rgba(0,0,0,.12)}
+.type-btn:not(.active){background:transparent;color:var(--muted)}
+
+/* Amount big display */
+.amount-display{text-align:center;margin-bottom:26px}
+.amount-wrap{display:inline-flex;align-items:baseline;gap:4px}
+.amount-currency{font-size:40px;font-weight:900;color:var(--text);letter-spacing:-1px}
+.amount-input{
+  border:none;background:transparent;outline:none;
+  font-size:56px;font-weight:900;color:var(--text);
+  letter-spacing:-2px;width:200px;font-family:inherit;
+  -webkit-appearance:none;text-align:left;
+}
+.amount-input::placeholder{color:var(--line)}
+.amount-line{height:3px;background:var(--line);border-radius:999px;max-width:260px;margin:0 auto;transition:background .2s}
+.amount-input:focus~.amount-line{background:var(--blue)}
+
+/* Category pills */
+.cat-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;margin-left:2px}
+.cat-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.cat-pill{
+  padding:9px 14px;border-radius:999px;border:2px solid var(--line);
+  background:var(--card);font-family:inherit;font-size:14px;font-weight:600;
+  cursor:pointer;display:flex;align-items:center;gap:6px;
+  transition:all .18s;color:var(--text2);
+}
+.cat-pill.active{border-width:2px}
+
+/* Field */
+.field{margin-bottom:14px}
+.field-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;margin-left:2px}
+.field input,.field select{
+  width:100%;padding:14px 16px;border-radius:16px;
+  border:1.5px solid var(--line);font-size:16px;font-family:inherit;
+  background:#FAFAFA;color:var(--text);outline:none;
+  -webkit-appearance:none;transition:border-color .2s;
+}
+.field input:focus,.field select:focus{border-color:var(--blue)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* Account list */
+.acct-list{background:var(--card);border-radius:18px;overflow:hidden;margin-bottom:18px;
+  box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.acct-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:15px 18px;border-bottom:.5px solid #F2F2F7;cursor:pointer;
+  transition:background .15s;
+}
+.acct-row:last-child{border-bottom:none}
+.acct-row:active{background:#F5F5F7}
+.acct-name{font-size:15px;color:var(--text);font-weight:500}
+.acct-check{color:var(--blue);font-size:20px;font-weight:700}
+
+/* Submit button */
+.submit-btn{
+  width:100%;padding:18px;border-radius:18px;border:none;
+  font-family:inherit;font-size:17px;font-weight:800;
+  cursor:pointer;letter-spacing:-.2px;
+  transition:all .2s;margin-bottom:8px;
+}
+.submit-btn.ready{
+  background:linear-gradient(145deg,#0A84FF,#007AFF);color:#fff;
+  box-shadow:0 4px 24px rgba(0,122,255,.4);
+}
+.submit-btn:not(.ready){background:var(--line);color:var(--muted);cursor:default}
+
+/* Budget */
+.budget-card{
+  background:var(--card);border-radius:22px;padding:16px 18px;
+  margin:0 16px 12px;box-shadow:0 1px 0 rgba(0,0,0,.06),0 4px 20px rgba(0,0,0,.08);
+}
+.budget-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.budget-icon-wrap{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-right:12px}
+.budget-bar{height:7px;background:var(--line);border-radius:999px;margin-top:12px;overflow:hidden}
+.budget-fill{height:100%;border-radius:999px;transition:width .7s cubic-bezier(.34,1.56,.64,1)}
+
+/* Bottom Tab Bar */
+.tabbar{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;
+  background:rgba(249,249,249,.92);
+  backdrop-filter:blur(30px) saturate(200%);
+  -webkit-backdrop-filter:blur(30px) saturate(200%);
+  border-top:.5px solid rgba(0,0,0,.1);
+  display:grid;grid-template-columns:1fr 60px 1fr;
+  align-items:center;padding:10px 20px calc(10px + var(--safe-bottom));
+  z-index:999;
+}
+.tab-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  background:none;border:none;cursor:pointer;font-family:inherit;
+  transition:color .18s;padding:0;
+}
+.tab-icon{font-size:26px;line-height:1;filter:grayscale(1) opacity(.55);transition:filter .18s}
+.tab-item.active .tab-icon{filter:none}
+.tab-label{font-size:10px;font-weight:600;transition:color .18s}
+.tab-item.active .tab-label{color:var(--blue)}
+.tab-item:not(.active) .tab-label{color:var(--muted)}
+.fab{
+  width:56px;height:56px;border-radius:28px;border:none;
+  background:linear-gradient(145deg,#0A84FF,#007AFF);
+  color:#fff;font-size:28px;cursor:pointer;
+  box-shadow:0 4px 20px rgba(0,122,255,.45);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .1s,box-shadow .1s;
+}
+.fab:active{transform:scale(.92);box-shadow:0 2px 10px rgba(0,122,255,.3)}
+
+/* Status / Toast */
+.toast{
+  position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-20px);
+  background:rgba(28,28,30,.9);color:#fff;padding:12px 20px;
+  border-radius:999px;font-size:14px;font-weight:600;
+  opacity:0;transition:all .3s;pointer-events:none;z-index:9999;
+  backdrop-filter:blur(20px);white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Loading */
+.loading{text-align:center;padding:30px;color:var(--muted);font-size:14px}
+.spinner{
+  width:28px;height:28px;border:3px solid var(--line);
+  border-top-color:var(--blue);border-radius:50%;
+  animation:spin .7s linear infinite;margin:0 auto 10px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Syncing indicator */
+.sync-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--green);display:inline-block;margin-left:6px;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+</style>
+</head>
+<body>
+
+<!-- Toast -->
+<div class="toast" id="toast">✅ บันทึกสำเร็จ</div>
+
+<!-- ══ HOME TAB ══ -->
+<div id="screen-home" style="display: block;">
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-month" id="hero-month">พฤษภาคม 2569</div>
+    <div class="hero-balance" id="hero-balance">฿0</div>
+    <div class="hero-grid">
+      <div class="mini-card">
+        <div class="mini-label">รายรับ</div>
+        <div class="mini-value" id="mini-income" style="color:#30D158">฿0</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-label">รายจ่าย</div>
+        <div class="mini-value" id="mini-expense" style="color:#FF375F">฿0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="pills">
+    <button class="pill active" data-filter="all">ทั้งหมด</button>
+    <button class="pill" data-filter="income">รายรับ</button>
+    <button class="pill" data-filter="expense">รายจ่าย</button>
+  </div>
+
+  <!-- List -->
+  <div class="card" id="tx-card" style="margin-top:8px">
+      <div class="tx-row" id="row-1777968477785">
+        <div style="display:flex;align-items:center;flex:1;min-width:0">
+          <div class="tx-icon" style="background:rgba(48,209,88,.12)">
+            💼
+          </div>
+          <div style="min-width:0">
+            <div class="tx-name">เงินเดือน</div>
+            <div class="tx-meta">27 เม.ย. · กรุงไทย 036 เงินเดือน</div>
+          </div>
+        </div>
+        <div style="flex-shrink:0;text-align:right;margin-left:10px">
+          <div class="tx-amount" style="color:var(--green)">
+            +฿20,000
+          </div>
+          <button class="tx-del" onclick="deleteItem(&#39;1777968477785&#39;)">ลบ</button>
+        </div>
+      </div>
+    </div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <button class="action-btn action-ghost" onclick="exportCSV()">⬇️ Export CSV</button>
+    <button class="action-btn action-danger" onclick="clearAll()">🗑️ ล้างข้อมูล</button>
+  </div>
+
+  <div style="text-align:center;color:var(--muted);font-size:12px;padding-bottom:8px">
+    ซิงค์กับ Google Sheets <span class="sync-dot" id="sync-dot" style="background: rgb(48, 209, 88);"></span>
+  </div>
+</div>
+
+<!-- ══ ADD TAB ══ -->
+<div id="screen-add" style="display: none;">
+  <div class="screen">
+    <div class="screen-header">
+      <div class="title-md">รายการใหม่</div>
+      <button class="close-btn" onclick="showTab(&#39;home&#39;)">✕</button>
+    </div>
+
+    <!-- Type -->
+    <div class="type-toggle">
+      <button class="type-btn active" id="btn-income" onclick="setType(&#39;income&#39;)" style="color:#30D158">รายรับ 🟢</button>
+      <button class="type-btn" id="btn-expense" onclick="setType(&#39;expense&#39;)" style="color:var(--muted)">รายจ่าย 🔴</button>
+    </div>
+
+    <!-- Amount -->
+    <div class="amount-display">
+      <div class="amount-wrap">
+        <span class="amount-currency">฿</span>
+        <input class="amount-input" id="amount" type="number" inputmode="decimal" placeholder="0" min="0" step="any">
+      </div>
+      <div class="amount-line" id="amount-line"></div>
+    </div>
+
+    <!-- Category -->
+    <div class="cat-label">หมวดหมู่</div>
+    <div class="cat-pills" id="cat-pills">
+    <button class="cat-pill active" onclick="selectCat(&#39;เงินเดือน&#39;)" style="border-color:#30D158;color:#30D158;background:#30D15818">💼 เงินเดือน</button>
+  
+    <button class="cat-pill" onclick="selectCat(&#39;งานสอน&#39;)" style="">📚 งานสอน</button>
+  
+    <button class="cat-pill" onclick="selectCat(&#39;ธุรกิจดูดวง&#39;)" style="">🔮 ธุรกิจดูดวง</button>
+  
+    <button class="cat-pill" onclick="selectCat(&#39;รับเงิน&#39;)" style="">💰 รับเงิน</button>
+  
+    <button class="cat-pill" onclick="selectCat(&#39;อื่น ๆ&#39;)" style="">📌 อื่น ๆ</button>
+  </div>
+
+    <!-- Account -->
+    <div class="cat-label">บัญชี</div>
+    <div class="acct-list" id="acct-list">
+    <div class="acct-row" onclick="selectAcct(&#39;กรุงไทย 036 เงินเดือน&#39;)">
+      <span class="acct-name">กรุงไทย 036 เงินเดือน</span>
+      <span class="acct-check">✓</span>
+    </div>
+  
+    <div class="acct-row" onclick="selectAcct(&#39;SCB รับเงิน/ใช้จ่าย&#39;)">
+      <span class="acct-name">SCB รับเงิน/ใช้จ่าย</span>
+      
+    </div>
+  
+    <div class="acct-row" onclick="selectAcct(&#39;กรุงเทพ ทำบุญ&#39;)">
+      <span class="acct-name">กรุงเทพ ทำบุญ</span>
+      
+    </div>
+  
+    <div class="acct-row" onclick="selectAcct(&#39;พร้อมเพย์&#39;)">
+      <span class="acct-name">พร้อมเพย์</span>
+      
+    </div>
+  
+    <div class="acct-row" onclick="selectAcct(&#39;เงินสด&#39;)">
+      <span class="acct-name">เงินสด</span>
+      
+    </div>
+  </div>
+
+    <!-- Date & Note -->
+    <div class="two-col" style="margin-bottom:18px">
+      <div class="field">
+        <div class="field-label">วันที่</div>
+        <input type="date" id="date">
+      </div>
+      <div class="field">
+        <div class="field-label">บันทึก</div>
+        <input type="text" id="note" placeholder="หมายเหตุ">
+      </div>
+    </div>
+
+    <button class="submit-btn ready" id="submit-btn" onclick="handleAdd()">บันทึก</button>
+  </div>
+</div>
+
+<!-- ══ BUDGET TAB ══ -->
+<div id="screen-budget" style="display: none;">
+  <div style="padding:12px 16px 18px">
+    <div class="title-md" style="margin-bottom:4px">งบประมาณ</div>
+    <div style="color:var(--muted);font-size:14px">จัดสรรจากรายรับเดือนนี้</div>
+  </div>
+  <div id="budget-content"><div style="text-align:center;padding:60px 20px;color:var(--muted)"><div style="font-size:48px;margin-bottom:12px">📊</div><div>ยังไม่มีรายรับเดือนนี้</div></div></div>
+</div>
+
+<!-- ══ BOTTOM TAB BAR ══ -->
+<div class="tabbar">
+  <button class="tab-item active" id="tab-home" onclick="showTab(&#39;home&#39;)">
+    <span class="tab-icon">🏠</span>
+    <span class="tab-label">หน้าหลัก</span>
+  </button>
+  <button class="fab" onclick="showTab(&#39;add&#39;)">＋</button>
+  <button class="tab-item" id="tab-budget" onclick="showTab(&#39;budget&#39;)">
+    <span class="tab-icon">📊</span>
+    <span class="tab-label">งบประมาณ</span>
+  </button>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════
+//  ⚠️  ตั้งค่า URL ของ Apps Script ที่นี่
+// ════════════════════════════════════════════════════
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyY6vscVSxCQYmUcyNiLFiOUos0TLLLtDuKlbeyP7jZbTG0nehcZPJRdKvE2ykafkQm0Q/exec";
+// ════════════════════════════════════════════════════
+
+const incomeCats  = ["เงินเดือน","งานสอน","ธุรกิจดูดวง","รับเงิน","อื่น ๆ"];
+const expenseCats = ["อาหาร","เดินทาง","หนี้","ของใช้","ทำบุญ","ธุรกิจดูดวง","สำรอง","อื่น ๆ"];
+const accounts    = ["กรุงไทย 036 เงินเดือน","SCB รับเงิน/ใช้จ่าย","กรุงเทพ ทำบุญ","พร้อมเพย์","เงินสด"];
+const catIcons    = {เงินเดือน:"💼",งานสอน:"📚",ธุรกิจดูดวง:"🔮",รับเงิน:"💰","อื่น ๆ":"📌",
+                     อาหาร:"🍜",เดินทาง:"🚗",หนี้:"💳",ของใช้:"🛍️",ทำบุญ:"🙏",สำรอง:"🛡️"};
+const budgetRules = [
+  {name:"ใช้จ่าย",pct:50,icon:"🛒",color:"#FF9F0A"},
+  {name:"เก็บออม", pct:20,icon:"🏦",color:"#30D158"},
+  {name:"ชำระหนี้",pct:20,icon:"💳",color:"#FF375F"},
+  {name:"ทำบุญ",  pct:10,icon:"🙏",color:"#BF5AF2"},
+  {name:"สำรอง",  pct:10,icon:"🛡️",color:"#0A84FF"},
+];
+
+let items=[], currentFilter="all", currentType="income", currentCat=incomeCats[0], currentAcct=accounts[0];
+
+const fmt = n => new Intl.NumberFormat("th-TH",{style:"currency",currency:"THB",maximumFractionDigits:0}).format(n||0);
+const thDate = d => new Date(d).toLocaleDateString("th-TH",{day:"numeric",month:"short"});
+const thisMonth = () => new Date().toISOString().slice(0,7);
+
+// ── Toast ──────────────────────────────────────────
+function toast(msg, dur=2200){
+  const el=document.getElementById("toast");
+  el.textContent=msg; el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"), dur);
+}
+
+// ── API ────────────────────────────────────────────
+async function apiCall(action, body={}){
+  const payload={action,...body};
+  const res = await fetch(SCRIPT_URL,{
+    method:"POST",
+    body:JSON.stringify(payload),
+    headers:{"Content-Type":"text/plain"}, // Apps Script workaround
+    mode:"cors"
+  });
+  return res.json();
+}
+
+async function loadItems(){
+  setSyncState("loading");
+  try{
+    const data = await apiCall("getAll");
+    if(data.error) throw new Error(data.error);
+    items = (data.items||[]).map(i=>({...i, amount:parseFloat(i.amount)||0}));
+    setSyncState("ok");
+    render();
+  } catch(e){
+    setSyncState("error");
+    toast("⚠️ โหลดข้อมูลไม่ได้: "+e.message, 3500);
+    document.getElementById("tx-card").innerHTML=`<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-text">โหลดไม่ได้<br><small>ตรวจสอบ SCRIPT_URL</small></div></div>`;
+  }
+}
+
+async function apiAdd(item){
+  setSyncState("loading");
+  try{
+    const data=await apiCall("add",item);
+    if(data.error) throw new Error(data.error);
+    setSyncState("ok"); toast("✅ บันทึกสำเร็จ");
+  } catch(e){
+    setSyncState("error"); toast("❌ บันทึกไม่ได้: "+e.message,3000);
+  }
+}
+
+async function apiDelete(id){
+  setSyncState("loading");
+  try{
+    const data=await apiCall("delete",{id:String(id)});
+    if(data.error) throw new Error(data.error);
+    setSyncState("ok");
+  } catch(e){
+    setSyncState("error"); toast("❌ ลบไม่ได้: "+e.message,3000);
+  }
+}
+
+function setSyncState(state){
+  const dot=document.getElementById("sync-dot");
+  if(!dot) return;
+  dot.style.background = state==="ok"?"#30D158":state==="loading"?"#FF9F0A":"#FF375F";
+}
+
+// ── Render ─────────────────────────────────────────
+function render(){
+  const mn=new Date().toLocaleDateString("th-TH",{month:"long",year:"numeric"});
+  document.getElementById("hero-month").textContent=mn;
+
+  const monthItems=items.filter(i=>String(i.date).slice(0,7)===thisMonth());
+  const income =monthItems.filter(i=>i.type==="income" ).reduce((s,i)=>s+i.amount,0);
+  const expense=monthItems.filter(i=>i.type==="expense").reduce((s,i)=>s+i.amount,0);
+  const balance=income-expense;
+
+  document.getElementById("hero-balance").textContent=fmt(balance);
+  document.getElementById("mini-income").textContent=fmt(income);
+  document.getElementById("mini-expense").textContent=fmt(expense);
+
+  // Transactions
+  const shown=items
+    .filter(i=>currentFilter==="all"||i.type===currentFilter)
+    .sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+
+  const card=document.getElementById("tx-card");
+  if(shown.length===0){
+    card.innerHTML=`<div class="empty"><div class="empty-icon">💸</div><div class="empty-text">ยังไม่มีรายการ<br><span style="font-size:13px">กดปุ่ม + เพื่อเพิ่มรายการ</span></div></div>`;
+  } else {
+    card.innerHTML=shown.map(i=>`
+      <div class="tx-row" id="row-${i.id}">
+        <div style="display:flex;align-items:center;flex:1;min-width:0">
+          <div class="tx-icon" style="background:${i.type==="income"?"rgba(48,209,88,.12)":"rgba(255,55,95,.1)"}">
+            ${catIcons[i.category]||"📌"}
+          </div>
+          <div style="min-width:0">
+            <div class="tx-name">${i.category}${i.note?`<span style="font-weight:400;color:var(--muted)"> · ${i.note}</span>`:""}</div>
+            <div class="tx-meta">${thDate(i.date)} · ${i.account||""}</div>
+          </div>
+        </div>
+        <div style="flex-shrink:0;text-align:right;margin-left:10px">
+          <div class="tx-amount" style="color:${i.type==="income"?"var(--green)":"var(--red)"}">
+            ${i.type==="income"?"+":"-"}${fmt(i.amount)}
+          </div>
+          <button class="tx-del" onclick="deleteItem('${i.id}')">ลบ</button>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // Budget
+  renderBudget(income);
+}
+
+function renderBudget(income){
+  const el=document.getElementById("budget-content");
+  if(income===0){
+    el.innerHTML=`<div style="text-align:center;padding:60px 20px;color:var(--muted)"><div style="font-size:48px;margin-bottom:12px">📊</div><div>ยังไม่มีรายรับเดือนนี้</div></div>`;
+    return;
+  }
+  el.innerHTML=budgetRules.map(({name,pct,icon,color})=>`
+    <div class="budget-card">
+      <div class="budget-row">
+        <div style="display:flex;align-items:center">
+          <div class="budget-icon-wrap" style="background:${color}18">${icon}</div>
+          <div>
+            <div style="font-weight:700;font-size:16px">${name}</div>
+            <div style="font-size:13px;color:var(--muted)">${pct}% ของรายรับ</div>
+          </div>
+        </div>
+        <div style="font-weight:900;font-size:21px;color:${color}">${fmt(income*pct/100)}</div>
+      </div>
+      <div class="budget-bar">
+        <div class="budget-fill" style="width:${pct}%;background:${color}"></div>
+      </div>
+    </div>
+  `).join("");
+}
+
+// ── Add Item ───────────────────────────────────────
+function setType(t){
+  currentType=t;
+  currentCat=(t==="income"?incomeCats:expenseCats)[0];
+  document.getElementById("btn-income").classList.toggle("active",t==="income");
+  document.getElementById("btn-expense").classList.toggle("active",t==="expense");
+  document.getElementById("btn-income").style.color=t==="income"?"#30D158":"var(--muted)";
+  document.getElementById("btn-expense").style.color=t==="expense"?"#FF375F":"var(--muted)";
+  renderCats();
+}
+
+function renderCats(){
+  const cats=currentType==="income"?incomeCats:expenseCats;
+  const color=currentType==="income"?"#30D158":"#FF375F";
+  document.getElementById("cat-pills").innerHTML=cats.map(c=>`
+    <button class="cat-pill${c===currentCat?" active":""}" onclick="selectCat('${c}')"
+      style="${c===currentCat?`border-color:${color};color:${color};background:${color}18`:""}"
+    >${catIcons[c]||"📌"} ${c}</button>
+  `).join("");
+}
+
+function selectCat(c){
+  currentCat=c; renderCats();
+}
+
+function renderAccts(){
+  document.getElementById("acct-list").innerHTML=accounts.map(a=>`
+    <div class="acct-row" onclick="selectAcct('${a}')">
+      <span class="acct-name">${a}</span>
+      ${a===currentAcct?'<span class="acct-check">✓</span>':""}
+    </div>
+  `).join("");
+}
+
+function selectAcct(a){ currentAcct=a; renderAccts(); }
+
+async function handleAdd(){
+  const amt=parseFloat(document.getElementById("amount").value);
+  if(!amt||amt<=0){ toast("⚠️ กรุณากรอกจำนวนเงิน"); return; }
+  const item={
+    id:String(Date.now()),
+    type:currentType, amount:amt, category:currentCat,
+    account:currentAcct,
+    date:document.getElementById("date").value,
+    note:document.getElementById("note").value.trim()
+  };
+  items.unshift(item);
+  render();
+  document.getElementById("amount").value="";
+  document.getElementById("note").value="";
+  showTab("home");
+  await apiAdd(item);
+}
+
+async function deleteItem(id){
+  if(!confirm("ลบรายการนี้?")) return;
+  const row=document.getElementById("row-"+id);
+  if(row){ row.style.opacity="0"; row.style.transform="translateX(30px)"; row.style.transition="all .25s"; }
+  setTimeout(()=>{ items=items.filter(i=>String(i.id)!==String(id)); render(); },230);
+  await apiDelete(id);
+}
+
+function clearAll(){
+  if(!confirm("ล้างข้อมูลทั้งหมดใน app?\n(ข้อมูลใน Google Sheets จะยังอยู่)")) return;
+  items=[]; render(); toast("🗑️ ล้างหน้าจอแล้ว (Sheets ยังเก็บอยู่)");
+}
+
+function exportCSV(){
+  const h=["id","date","type","amount","category","account","note"];
+  const rows=items.map(i=>h.map(k=>`"${String(i[k]||"").replaceAll('"','""')}"`).join(","));
+  const a=document.createElement("a");
+  a.href="data:text/csv;charset=utf-8,\ufeff"+encodeURIComponent([h.join(","),...rows].join("\n"));
+  a.download="money-flow.csv"; a.click();
+  toast("📥 ดาวน์โหลด CSV แล้ว");
+}
+
+// ── Navigation ─────────────────────────────────────
+function showTab(tab){
+  ["home","add","budget"].forEach(t=>{
+    document.getElementById("screen-"+t).style.display=t===tab?"block":"none";
+    const btn=document.getElementById("tab-"+t);
+    if(btn) btn.classList.toggle("active",t===tab);
+  });
+  if(tab==="add"){ renderCats(); renderAccts(); }
+}
+
+// ── Filter pills ───────────────────────────────────
+document.querySelectorAll(".pill").forEach(p=>{
+  p.addEventListener("click",()=>{
+    document.querySelectorAll(".pill").forEach(x=>x.classList.remove("active"));
+    p.classList.add("active");
+    currentFilter=p.dataset.filter;
+    render();
+  });
+});
+
+// ── Amount input watcher ───────────────────────────
+document.getElementById("amount").addEventListener("input",()=>{
+  const v=parseFloat(document.getElementById("amount").value);
+  const btn=document.getElementById("submit-btn");
+  btn.classList.toggle("ready",v>0);
+});
+
+// ── Init ───────────────────────────────────────────
+document.getElementById("date").value=new Date().toISOString().slice(0,10);
+document.getElementById("hero-month").textContent=
+  new Date().toLocaleDateString("th-TH",{month:"long",year:"numeric"});
+
+if(SCRIPT_URL==="YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"){
+  document.getElementById("tx-card").innerHTML=`
+    <div class="empty">
+      <div class="empty-icon">⚙️</div>
+      <div class="empty-text">ยังไม่ได้ตั้งค่า<br><small>แก้ SCRIPT_URL ในไฟล์ HTML</small></div>
+    </div>`;
+  setSyncState("error");
+} else {
+  loadItems();
+}
+</script>
+
+
+</body></html>
